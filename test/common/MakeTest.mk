@@ -23,7 +23,7 @@ $(VERILATOR_MOULE_MK): $(ROOT)/src/$(TEST_MODULE).sv
 	verilator --Mdir $(VERILATOR_GEN_DIR) -Wall --threads 16 --trace -sv --cc -CFLAGS "-std=c++2a -fconcepts" $(ROOT)/src/$(TEST_MODULE).sv
 
 $(ROOT)/libs/googletest-release-1.10.0/Makefile: $(ROOT)/libs/googletest-release-1.10.0/CMakeLists.txt
-	cmake $(ROOT)/libs/googletest-release-1.10.0/Makefile
+	cmake $(ROOT)/libs/googletest-release-1.10.0/ -B $(ROOT)/libs/googletest-release-1.10.0/
 
 $(ROOT)/libs/googletest-release-1.10.0/lib/libgtest_main.a: $(ROOT)/libs/googletest-release-1.10.0/Makefile
 	$(MAKE) -C $(ROOT)/libs/googletest-release-1.10.0/
