@@ -1,0 +1,4 @@
+config
+.vscode
+verilator_gen
+*.vcd
