@@ -1,4 +1,3 @@
-/* verilator lint_off DECLFILENAME */
 module RegisterFile (
     input logic clk,
     input logic rst,

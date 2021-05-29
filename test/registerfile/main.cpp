@@ -6,8 +6,8 @@
 TEST(RegisterFileTest, X0NoWrite)
 {
     Verilated::traceEverOn(true);
-    Vregisterfile rf;
-    Wrap<Vregisterfile> wrap("X0NoWrite.vcd", &rf);
+    VRegisterFile rf;
+    Wrap<VRegisterFile> wrap("X0NoWrite.vcd", &rf);
     rf.eval();
     rf.en = 1;
     rf.reg_a = 0;
@@ -30,8 +30,8 @@ TEST(RegisterFileTest, X1toPCWrite)
     Verilated::traceEverOn(true);
     for (int i = 1; i < 33; i++)
     {
-        Vregisterfile rf;
-        Wrap<Vregisterfile> wrap("X1to31Write.vcd", &rf);
+        VRegisterFile rf;
+        Wrap<VRegisterFile> wrap("X1to31Write.vcd", &rf);
         rf.eval();
         rf.en = 1;
         rf.reg_a = i;
@@ -55,8 +55,8 @@ TEST(RegisterFileTest, X1toPCWrite)
 TEST(RegisterFileTest, WriteAbovePC)
 {
     Verilated::traceEverOn(true);
-    Vregisterfile rf;
-    Wrap<Vregisterfile> wrap("X1to31Write.vcd", &rf);
+    VRegisterFile rf;
+    Wrap<VRegisterFile> wrap("X1to31Write.vcd", &rf);
     rf.eval();
     rf.en = 1;
 

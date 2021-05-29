@@ -1,4 +1,4 @@
 TEST_SOURCES = main.cpp
-TEST_MODULE = registerfile
+TEST_MODULE = RegisterFile
 
 include ../common/MakeTest.mk
