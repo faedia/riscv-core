@@ -2,7 +2,7 @@ mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 include $(current_dir)/../../config/config
 
-default: $(TEST_OUTPUT)
+default: run
 
 VERILATOR_INCLUDE = $(VERILATOR_ROOT)/include
 
@@ -28,10 +28,16 @@ $(ROOT)/libs/googletest-release-1.10.0/Makefile: $(ROOT)/libs/googletest-release
 $(ROOT)/libs/googletest-release-1.10.0/lib/libgtest_main.a: $(ROOT)/libs/googletest-release-1.10.0/Makefile
 	$(MAKE) -C $(ROOT)/libs/googletest-release-1.10.0/
 
-$(TEST_OUTPUT): $(TEST_SOURCES) $(VERILATOR_MODULE_LIB) $(ROOT)/libs/googletest-release-1.10.0/lib/libgtest_main.a
-	g++  -I$(ROOT)/libs/googletest-release-1.10.0/googletest/include -L$(ROOT)/libs/googletest-release-1.10.0/lib/ -I$(ROOT)/libs/googletest-release-1.10.0/ -DVL_THREADED -I$(ROOT)/test/common -I$(VERILATOR_INCLUDE) -I$(VERILATOR_GEN_DIR) -std=c++2a -fconcepts $(TEST_SOURCES) $(VERILATOR_INCLUDE)/verilated.cpp $(VERILATOR_INCLUDE)/verilated_threads.cpp $(VERILATOR_INCLUDE)/verilated_vcd_c.cpp -o $(TEST_OUTPUT)  $(VERILATOR_MODULE_LIB) -lgtest_main -lgtest -pthread
+test_main: $(TEST_SOURCES) $(VERILATOR_MODULE_LIB) $(ROOT)/libs/googletest-release-1.10.0/lib/libgtest_main.a
+	g++ -I$(ROOT)/libs/googletest-release-1.10.0/googletest/include -L$(ROOT)/libs/googletest-release-1.10.0/lib/ -I$(ROOT)/libs/googletest-release-1.10.0/ -DVL_THREADED -I$(ROOT)/test/common -I$(VERILATOR_INCLUDE) -I$(VERILATOR_GEN_DIR) -std=c++2a -fconcepts $(TEST_SOURCES) $(VERILATOR_INCLUDE)/verilated.cpp $(VERILATOR_INCLUDE)/verilated_threads.cpp $(VERILATOR_INCLUDE)/verilated_vcd_c.cpp -o test_main  $(VERILATOR_MODULE_LIB) -lgtest_main -lgtest -pthread
+
+build: test_main
+
+run: test_main
+	./test_main
 
 clean:
-	rm -f $(TEST_OUTPUT)
+	rm -f test_main
+	rm -f *.vcd
 	rm -rf $(VERILATOR_GEN_DIR)
 	$(MAKE) -C $(ROOT)/libs/googletest-release-1.10.0/ clean

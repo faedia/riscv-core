@@ -2,3 +2,4 @@ config
 .vscode
 verilator_gen
 *.vcd
+test_main
