@@ -11,7 +11,7 @@ module RegisterFile (
     output logic [31:0] data_a,
     output logic [31:0] data_b
 );
-    logic [32:0] [31:0] registers;
+    logic [31:0] registers [32:0];
 
     initial begin
         for (int i = 0; i < $size(registers); i++) begin

@@ -20,16 +20,16 @@ $(VERILATOR_MODULE_LIB): $(VERILATOR_MOULE_MK)
 
 $(VERILATOR_MOULE_MK): $(ROOT)/src/$(TEST_MODULE).sv
 	mkdir -p $(VERILATOR_GEN_DIR)
-	verilator --Mdir $(VERILATOR_GEN_DIR) -Wall --threads 16 --trace -sv --cc -CFLAGS "-std=c++2a -fconcepts" $(ROOT)/src/$(TEST_MODULE).sv
+	verilator --Mdir $(VERILATOR_GEN_DIR) -Wall --threads 16 --trace -sv --cc $(ROOT)/src/$(TEST_MODULE).sv
 
-$(ROOT)/libs/googletest-release-1.10.0/Makefile: $(ROOT)/libs/googletest-release-1.10.0/CMakeLists.txt
-	cmake $(ROOT)/libs/googletest-release-1.10.0/ -B $(ROOT)/libs/googletest-release-1.10.0/
+$(ROOT)/libs/googletest/Makefile: $(ROOT)/libs/googletest/CMakeLists.txt
+	cmake $(ROOT)/libs/googletest/ -B $(ROOT)/libs/googletest/
 
-$(ROOT)/libs/googletest-release-1.10.0/lib/libgtest_main.a: $(ROOT)/libs/googletest-release-1.10.0/Makefile
-	$(MAKE) -C $(ROOT)/libs/googletest-release-1.10.0/
+$(ROOT)/libs/googletest/lib/libgtest_main.a: $(ROOT)/libs/googletest/Makefile
+	$(MAKE) -C $(ROOT)/libs/googletest/
 
-test_main: $(TEST_SOURCES) $(VERILATOR_MODULE_LIB) $(ROOT)/libs/googletest-release-1.10.0/lib/libgtest_main.a
-	g++ -I$(ROOT)/libs/googletest-release-1.10.0/googletest/include -L$(ROOT)/libs/googletest-release-1.10.0/lib/ -I$(ROOT)/libs/googletest-release-1.10.0/ -DVL_THREADED -I$(ROOT)/test/common -I$(VERILATOR_INCLUDE) -I$(VERILATOR_GEN_DIR) -std=c++2a -fconcepts $(TEST_SOURCES) $(VERILATOR_INCLUDE)/verilated.cpp $(VERILATOR_INCLUDE)/verilated_threads.cpp $(VERILATOR_INCLUDE)/verilated_vcd_c.cpp -o test_main  $(VERILATOR_MODULE_LIB) -lgtest_main -lgtest -pthread
+test_main: $(TEST_SOURCES) $(VERILATOR_MODULE_LIB) $(ROOT)/libs/googletest/lib/libgtest_main.a
+	g++ -I$(ROOT)/libs/googletest/googletest/include -L$(ROOT)/libs/googletest/lib/ -I$(ROOT)/libs/googletest/ -DVL_THREADED -I$(ROOT)/test/common -I$(VERILATOR_INCLUDE) -I$(VERILATOR_GEN_DIR) -std=c++2a -fconcepts $(TEST_SOURCES) $(VERILATOR_INCLUDE)/verilated.cpp $(VERILATOR_INCLUDE)/verilated_threads.cpp $(VERILATOR_INCLUDE)/verilated_vcd_c.cpp -o test_main  $(VERILATOR_MODULE_LIB) -lgtest_main -lgtest -pthread
 
 build: test_main
 
@@ -40,4 +40,3 @@ clean:
 	rm -f test_main
 	rm -f *.vcd
 	rm -rf $(VERILATOR_GEN_DIR)
-	$(MAKE) -C $(ROOT)/libs/googletest-release-1.10.0/ clean
