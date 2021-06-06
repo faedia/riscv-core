@@ -11,20 +11,18 @@ module RegisterFile (
     output logic [31:0] data_a,
     output logic [31:0] data_b
 );
-    logic [31:0] registers [32:0];
+    logic [31:0] registers [31:1];
 
     initial begin
-        for (int i = 0; i < $size(registers); i++) begin
+        foreach (registers[i])
             registers[i] = 0;
-        end
     end
 
     always_ff @(posedge clk or posedge rst) begin
         if (en) begin
             if (rst) begin 
-                for (int i = 0; i < $size(registers); i++) begin
+                foreach (registers[i])
                     registers[i] <= 0;
-                end
             end
 
             if (we && reg_c != 0) begin
@@ -33,6 +31,6 @@ module RegisterFile (
         end
     end
 
-    assign data_a = en ? registers[reg_a] : 0;
-    assign data_b = en ? registers[reg_b] : 0;
+    assign data_a = en || (reg_a == 0) ? registers[reg_a] : 0;
+    assign data_b = en || (reg_b == 0) ? registers[reg_b] : 0;
 endmodule

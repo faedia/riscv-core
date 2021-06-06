@@ -1,4 +1,4 @@
-#include "Vregisterfile.h"
+#include "VRegisterFile.h"
 #include <verilated_vcd_c.h>
 #include "Wrap.h"
 #include <gtest/gtest.h>
@@ -28,7 +28,7 @@ TEST(RegisterFileTest, X0NoWrite)
 TEST(RegisterFileTest, X1toPCWrite)
 {
     Verilated::traceEverOn(true);
-    for (int i = 1; i < 33; i++)
+    for (int i = 1; i < 32; i++)
     {
         VRegisterFile rf;
         Wrap<VRegisterFile> wrap("X1to31Write.vcd", &rf);
@@ -61,8 +61,8 @@ TEST(RegisterFileTest, WriteAbovePC)
     rf.en = 1;
 
     rf.en = 1;
-    rf.reg_a = 33;
-    rf.reg_c = 33;
+    rf.reg_a = 32;
+    rf.reg_c = 32;
     rf.data_c = 10;
 
     rf.we = 0;
