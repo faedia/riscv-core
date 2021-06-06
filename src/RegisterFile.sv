@@ -1,17 +1,19 @@
+import Types::*;
+
 module RegisterFile (
     input logic clk,
     input logic rst,
     input logic en,
     input logic we,
-    input logic [5:0] reg_a,
-    input logic [5:0] reg_b,
-    input logic [5:0] reg_c,
-    input logic [31:0] data_c,
+    input t_register reg_a,
+    input t_register reg_b,
+    input t_register reg_c,
+    input t_word data_c,
     
-    output logic [31:0] data_a,
-    output logic [31:0] data_b
+    output t_word data_a,
+    output t_word data_b
 );
-    logic [31:0] registers [31:1];
+    t_word registers [31:1];
 
     initial begin
         foreach (registers[i])

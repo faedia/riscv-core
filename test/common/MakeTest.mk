@@ -1,4 +1,5 @@
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+SHELL=/usr/bin/bash
 current_dir := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 include $(current_dir)/../../config/config
 
@@ -6,7 +7,7 @@ default: run
 
 VERILATOR_INCLUDE = $(VERILATOR_ROOT)/include
 
-VERILATOR_PREFIX = V$(TEST_MODULE)
+VERILATOR_PREFIX = $(TEST_MODULE)
 
 VERILATOR_GEN_DIR = $(ROOT)/verilator_gen/$(TEST_MODULE)
 
@@ -20,7 +21,7 @@ $(VERILATOR_MODULE_LIB): $(VERILATOR_MOULE_MK)
 
 $(VERILATOR_MOULE_MK): $(ROOT)/src/$(TEST_MODULE).sv
 	mkdir -p $(VERILATOR_GEN_DIR)
-	verilator --Mdir $(VERILATOR_GEN_DIR) -Wall --threads 16 --trace -sv --cc $(ROOT)/src/$(TEST_MODULE).sv
+	verilator --Mdir $(VERILATOR_GEN_DIR) --threads 16 --trace -sv --cc $(ROOT)/src/{Types,Decoder,RegisterFile}.sv --top-module $(TEST_MODULE) --prefix $(TEST_MODULE)
 
 $(ROOT)/libs/googletest/Makefile: $(ROOT)/libs/googletest/CMakeLists.txt
 	cmake $(ROOT)/libs/googletest/ -B $(ROOT)/libs/googletest/
