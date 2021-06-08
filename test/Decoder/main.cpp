@@ -79,7 +79,6 @@ t_decoded_instr convert_decoded_instr(const std::bitset<47>& decoded_instr)
 TEST(DecoderImmediateIntegerRV32, ADDI)
 {
     Decoder dec;
-    //Wrap<Decoder> wrap("ADDI.vcd", &dec);
     dec.eval();
     dec.instr = 0x00A08093;
     dec.eval();
@@ -88,5 +87,19 @@ TEST(DecoderImmediateIntegerRV32, ADDI)
     ASSERT_EQ(instr.op_imm_instr.func, FK_ADD);
     ASSERT_EQ(instr.op_imm_instr.src_register, 1);
     ASSERT_EQ(instr.op_imm_instr.imm, 10);
+    ASSERT_EQ(instr.op_imm_instr.src_register, 1);
+}
+
+TEST(DecoderImmediateIntegerRV32, ADDINegative)
+{
+    Decoder dec;
+    dec.eval();
+    dec.instr = 0xFFF08093;
+    dec.eval();
+    t_decoded_instr instr = convert_decoded_instr(dec.decoded_instr);
+    ASSERT_EQ(instr.kind, OK_OP_IMM);
+    ASSERT_EQ(instr.op_imm_instr.func, FK_ADD);
+    ASSERT_EQ(instr.op_imm_instr.src_register, 1);
+    ASSERT_EQ(instr.op_imm_instr.imm, -1);
     ASSERT_EQ(instr.op_imm_instr.src_register, 1);
 }

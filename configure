@@ -1,0 +1,10 @@
+ROOT=$PWD
+VERILATOR_ROOT=`verilator -V | grep "\s*VERILATOR_ROOT\s*=\s*\S" | sed 's/\s*VERILATOR_ROOT\s*=\s*//g'`
+
+mkdir -p config
+echo "" >config/config
+echo "ROOT=$ROOT" >> config/config
+echo "VERILATOR_ROOT=$VERILATOR_ROOT" >> config/config
+echo "VERILATOR_INCLUDE=$VERILATOR_ROOT/include" >> config/config
+echo "LIB_DIR=$ROOT/lib" >> config/config
+echo "OBJ_DIR=$ROOT/obj" >> config/config

@@ -3,3 +3,7 @@ config
 verilator_gen
 *.vcd
 test_main
+*.o
+lib
+libs/verilated_src
+bin

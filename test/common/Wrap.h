@@ -19,10 +19,10 @@ concept Clockable = requires (T t) {
 };
 
 template <typename T>
-concept Module = Evalable<T> && Tracable<T>;
+concept SynthModule = Evalable<T> && Tracable<T>;
 
 template <typename T>
-concept ClockableModule = Module<T> && Clockable<T>;
+concept ClockableModule = SynthModule<T> && Clockable<T>;
 
 template<ClockableModule T>
 class Wrap
