@@ -45,6 +45,7 @@ $(LIB_DIR)/libgtest.a: $(ROOT)/libs/googletest/lib/libgtest.a $(LIB_DIR)/libgtes
 	cp $< $@
 
 $(ROOT)/libs/googletest/lib/libgtest_main.a:
+	cmake $(ROOT)/libs/googletest/ -B $(ROOT)/libs/googletest/
 	$(MAKE) -C $(ROOT)/libs/googletest/
 
 $(ROOT)/verilator_gen:
