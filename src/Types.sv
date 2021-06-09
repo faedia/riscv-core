@@ -1,7 +1,9 @@
 package Types;
     
     typedef logic [6:0] t_opcode;
-    const t_opcode OP_IMM = 'b00_100_11;
+    const t_opcode OP_IMM   = 'b00_100_11;
+    const t_opcode OP_LUI   = 'b01_101_11;
+    const t_opcode OP_AUIPC = 'b00_101_11;
     
     typedef logic [2:0] t_funct3;
     const t_funct3 F3_ADD = 'b000;
@@ -18,9 +20,11 @@ package Types;
     typedef logic [4:0] t_register;
     typedef logic [31:0] t_word;
 
-    typedef enum logic [0:0] { 
+    typedef enum logic [1:0] { 
         OK_UNKNOWN,
-        OK_OP_IMM
+        OK_OP_IMM,
+        OK_OP_LUI,
+        OK_OP_AUIPC
     } t_op_kind;
 
     typedef enum logic [3:0] { 
@@ -43,8 +47,14 @@ package Types;
         t_register dest_register;
     } t_op_imm_instr;
 
+    typedef struct packed {
+        t_word immediate_value;
+        t_register dest_register;
+    } t_op_lui_instr;
+
     typedef union packed {
         t_op_imm_instr op_imm_instr;
+        t_op_lui_instr op_lui_instr;
     } t_instr_data_union;
 
     typedef struct packed {
