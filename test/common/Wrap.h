@@ -19,36 +19,49 @@ concept Clockable = requires (T t) {
 };
 
 template <typename T>
-concept SynthModule = Evalable<T> && Tracable<T>;
+concept SynthModule = Evalable<T> && Tracable<T>; 
 
 template <typename T>
 concept ClockableModule = SynthModule<T> && Clockable<T>;
 
-template<ClockableModule T>
-class Wrap
+template<SynthModule T>
+class UnclockedModule
 {
-private:
+protected:
     VerilatedVcdC m_trace;
     int m_tick_count = 0;
 public:
-    T *vmodule;
-    Wrap(const char* trace_name, T *m) : vmodule(m)
+    T m;
+    UnclockedModule(const char* trace_name)
     {
-        vmodule->trace(&m_trace, 99, 0);
+        m.trace(&m_trace, 99, 0);
         m_trace.open(trace_name);
     }
-    ~Wrap()
+    ~UnclockedModule()
     {  
         m_trace.close();
     }
+    virtual void tick()
+    {
+        m.eval();
+        m_trace.dump(m_tick_count++);
+    }
+};
 
-    void tick() {
-        vmodule->clk = 0;
-        vmodule->eval();
-        m_trace.dump(m_tick_count++);
-        vmodule->clk = 1;
-        vmodule->eval();
-        m_trace.dump(m_tick_count++);
+template<ClockableModule T>
+class ClockedModule : public UnclockedModule<T>
+{
+public:
+    ClockedModule(const char* trace_name) : UnclockedModule<T>(trace_name) {}
+
+    virtual void tick() override
+    {
+        this->m.clk = 0;
+        this->m.eval();
+        this->m_trace.dump(this->m_tick_count++);
+        this->m.clk = 1;
+        this->m.eval();
+        this->m_trace.dump(this->m_tick_count++);
     }
 };
 #endif

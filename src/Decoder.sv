@@ -43,12 +43,13 @@ module Decoder (
                         FK_ADD,
                         FK_SUB,
                         FK_SLT,
+                        // The SLTIU instruction does perform sign extending but just treats the number
+                        // as unsigned anyway
+                        FK_SLTU,
                         FK_AND,
                         FK_OR,
                         FK_XOR:
                             tmp_instr.immediate_value = {{20{instr[31]}}, instr[31:20]};
-                        FK_SLTU:
-                            tmp_instr.immediate_value = {{20{1'b0}}, instr[31:20]};
 
                         FK_SLL,
                         FK_SRL,
