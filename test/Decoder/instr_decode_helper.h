@@ -55,6 +55,8 @@ struct t_op_lui_instr
     t_register dest_register;
 };
 
+typedef t_op_lui_instr t_op_auipc_instr;
+
 struct t_decoded_instr
 {
     t_op_kind kind;
@@ -62,6 +64,7 @@ struct t_decoded_instr
     {
         t_op_imm_instr op_imm_instr;
         t_op_lui_instr op_lui_instr;
+        t_op_auipc_instr op_auipc_instr;
     };
 };
 

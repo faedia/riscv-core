@@ -30,17 +30,25 @@ t_op_lui_instr get_op_lui_instr(const std::bitset<INSTR_SZ>& decoded_instr)
     return ret_val;
 }
 
+t_op_auipc_instr get_op_auipc_instr(const std::bitset<INSTR_SZ>& decoded_instr)
+{
+    return get_op_lui_instr(decoded_instr);
+}
+
+#define GET_OP(di, i, op_kind, OP_KIND)\
+    case OK_OP_##OP_KIND:\
+        (di.op_##op_kind##_instr = get_op_##op_kind##_instr(i));\
+        break;
+
 t_decoded_instr convert_decoded_instr(const std::bitset<INSTR_SZ>& decoded_instr)
 {
     t_decoded_instr ret_val;
     ret_val.kind = (t_op_kind) (decoded_instr >> INNER_INSTR_SZ).to_ullong();
     switch (ret_val.kind)
     {
-    case OK_OP_IMM:
-        ret_val.op_imm_instr = get_op_imm_instr(decoded_instr);
-        break;
-    case OK_OP_LUI:
-        ret_val.op_lui_instr = get_op_lui_instr(decoded_instr);
+        GET_OP(ret_val, decoded_instr, imm, IMM)
+        GET_OP(ret_val, decoded_instr, lui, LUI)
+        GET_OP(ret_val, decoded_instr, auipc, AUIPC)
     default:
         break;
     }

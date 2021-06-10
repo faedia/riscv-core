@@ -1,14 +1,14 @@
 current_dir := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 include $(current_dir)/config/config
 
-MODULES=Decoder RegisterFile
+MODULES=Decoder RegisterFile ALU
 MODULES_A=$(foreach m,$(MODULES), $(LIB_DIR)/lib$(m).a)
 
 VERILATED_SRCS=$(VERILATOR_INCLUDE)/verilated.cpp $(VERILATOR_INCLUDE)/verilated_vcd_c.cpp $(VERILATOR_INCLUDE)/verilated_cov.cpp
 CP_VERITALTED_SRCS=$(patsubst $(VERILATOR_INCLUDE)/%,$(ROOT)/libs/verilated_src/%,$(VERILATED_SRCS))
 VERILATED_OBJS=$(patsubst $(ROOT)/libs/verilated_src/%.cpp,$(ROOT)/libs/verilated_src/obj/%.o,$(CP_VERITALTED_SRCS))
 
-NOT_DIR_SRCS=Types.sv Decoder.sv RegisterFile.sv
+NOT_DIR_SRCS=Types.sv Decoder.sv RegisterFile.sv ALU.sv
 SRCS=$(foreach s,$(NOT_DIR_SRCS), $(ROOT)/src/$(s))
 
 TEST_SRCS=$(foreach m,$(MODULES),$(wildcard $(ROOT)/test/$(m)/*.cpp))

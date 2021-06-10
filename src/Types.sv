@@ -18,7 +18,8 @@ package Types;
     const t_funct3 F3_AND = 'b111;
 
     typedef logic [4:0] t_register;
-    typedef logic [31:0] t_word;
+    typedef logic signed [31:0] t_word;
+    typedef logic unsigned [31:0] t_uword;
 
     typedef enum logic [1:0] { 
         OK_UNKNOWN,
@@ -52,9 +53,12 @@ package Types;
         t_register dest_register;
     } t_op_lui_instr;
 
+    typedef t_op_lui_instr t_op_auipc_instr;
+
     typedef union packed {
         t_op_imm_instr op_imm_instr;
         t_op_lui_instr op_lui_instr;
+        t_op_auipc_instr op_auipc_instr;
     } t_instr_data_union;
 
     typedef struct packed {
