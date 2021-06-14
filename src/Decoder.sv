@@ -61,7 +61,7 @@ module Decoder (
                     endcase
 
                     decoded_instr.kind = OK_OP_IMM;
-                    decoded_instr.instr_data = {tmp_instr, {($bits(t_instr_data_union) - $bits(t_op_imm_instr)){1'b0}}};
+                    decoded_instr.instr_data = {{($bits(t_instr_data_union) - $bits(t_op_imm_instr)){1'b0}}, tmp_instr};
                     valid = 1;
                 end
             OP_LUI:
@@ -71,7 +71,7 @@ module Decoder (
                     tmp_instr.immediate_value = {instr[31:12], {12{1'b0}}};
 
                     decoded_instr.kind = OK_OP_LUI;
-                    decoded_instr.instr_data = {tmp_instr, {($bits(t_instr_data_union) - $bits(t_op_lui_instr)){1'b0}}};
+                    decoded_instr.instr_data = {{($bits(t_instr_data_union) - $bits(t_op_lui_instr)){1'b0}}, tmp_instr};
                     valid = 1;
                 end
             OP_AUIPC:
@@ -81,7 +81,7 @@ module Decoder (
                     tmp_instr.immediate_value = {instr[31:12], {12{1'b0}}};
 
                     decoded_instr.kind = OK_OP_AUIPC;
-                    decoded_instr.instr_data = {tmp_instr, {($bits(t_instr_data_union) - $bits(t_op_auipc_instr)){1'b0}}};
+                    decoded_instr.instr_data = {{($bits(t_instr_data_union) - $bits(t_op_auipc_instr)){1'b0}}, tmp_instr};
                     valid = 1;
                 end
             default:

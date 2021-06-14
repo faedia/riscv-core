@@ -70,4 +70,5 @@ struct t_decoded_instr
 
 t_decoded_instr convert_decoded_instr(const std::bitset<INSTR_SZ>& decoded_instr);
 
+std::bitset<INSTR_SZ> to_decoded_instr(t_decoded_instr instr);
 #endif

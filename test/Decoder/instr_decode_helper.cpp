@@ -54,3 +54,45 @@ t_decoded_instr convert_decoded_instr(const std::bitset<INSTR_SZ>& decoded_instr
     }
     return ret_val;
 }
+
+unsigned long long from_op_imm_instr(t_op_imm_instr instr)
+{
+    unsigned long long bits = (unsigned long long)instr.func << (REG_SZ + WORD_SZ + REG_SZ + OP_IMM_RM_BITS);
+    bits += (unsigned long long)instr.src_register << (WORD_SZ + REG_SZ + OP_IMM_RM_BITS);
+    bits += (unsigned long long)instr.uimm << (REG_SZ + OP_IMM_RM_BITS);
+    bits += (unsigned long long)instr.dest_register << OP_IMM_RM_BITS;
+    return bits;
+}
+
+unsigned long long from_op_lui_instr(t_op_lui_instr instr)
+{
+    unsigned long long bits = (unsigned long long)instr.imm << (REG_SZ + OP_LUI_RM_BITS);
+    bits += (unsigned long long)instr.dest_register << OP_LUI_RM_BITS;
+    return bits;
+}
+
+unsigned long long from_op_auipc_instr(t_op_auipc_instr instr)
+{
+    return from_op_lui_instr(instr);
+}
+
+#define FROM_OP(bits, i, op_kind, OP_KIND)\
+    case OK_OP_##OP_KIND:\
+        (bits += from_op_##op_kind##_instr(i.op_##op_kind##_instr));\
+        break;
+
+std::bitset<INSTR_SZ> to_decoded_instr(t_decoded_instr instr)
+{
+    unsigned long long bits = 0;
+    bits = (unsigned long long)instr.kind << (INNER_INSTR_SZ);
+    switch (instr.kind)
+    {
+        FROM_OP(bits, instr, imm, IMM)
+        FROM_OP(bits, instr, lui, LUI)
+        FROM_OP(bits, instr, auipc, AUIPC)
+    default:
+        break;
+    }
+
+    return bits;
+}

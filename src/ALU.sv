@@ -2,35 +2,45 @@ import Types::*;
 
 module ALU (
     input t_func_kind func,
-    input t_word a_op,
-    input t_word b_op,
+    input t_word a,
+    input t_word b,
     
     output t_word result
 );
+
+    /* verilator lint_off UNOPTFLAT */
+    t_word tmp_result;
+
+    initial begin
+        tmp_result = 0;
+    end
+
     always_comb begin
         case (func)
             FK_ADD:
-                result = a_op + b_op;
+                tmp_result = a + b;
             FK_SUB:
-                result = a_op - b_op;
+                tmp_result = a - b;
             FK_SLT:
-                result = t_uword'(a_op < b_op);
+                tmp_result = t_uword'(a < b);
             FK_SLTU:
-                result = t_uword'(t_uword'(a_op) < t_uword'(b_op));
+                tmp_result = t_uword'(t_uword'(a) < t_uword'(b));
             FK_AND:
-                result = a_op & b_op;
+                tmp_result = a & b;
             FK_OR:
-                result = a_op | b_op;
+                tmp_result = a | b;
             FK_XOR:
-                result = a_op ^ b_op;
+                tmp_result = a ^ b;
             FK_SLL:
-                result = a_op << b_op;
+                tmp_result = a << b;
             FK_SRL:
-                result = a_op >> b_op;
+                tmp_result = a >> b;
             FK_SRA:
-                result = a_op >>> b_op;
+                tmp_result = a >>> b;
             default:
-                ; 
+                tmp_result = 0; 
         endcase
     end
+
+    assign result = tmp_result;
 endmodule

@@ -48,9 +48,12 @@ package Types;
         t_register dest_register;
     } t_op_imm_instr;
 
+    typedef logic [$bits(t_op_imm_instr) - $bits(t_word) - $bits(t_register) - 1 : 0] t_lui_rm_bits;
+
     typedef struct packed {
         t_word immediate_value;
         t_register dest_register;
+        t_lui_rm_bits __padding__;
     } t_op_lui_instr;
 
     typedef t_op_lui_instr t_op_auipc_instr;

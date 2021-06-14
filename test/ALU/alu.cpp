@@ -20,8 +20,8 @@ TEST(ALUIntegerRV32, ADD)
     {
         t_uword a = std::rand();
         t_uword b = std::rand();
-        alu.m.a_op = a;
-        alu.m.b_op = b;
+        alu.m.a = a;
+        alu.m.b = b;
         alu.tick();
         ASSERT_EQ((t_word)alu.m.result, (t_word)a + (t_word)b) << "Adding " << (t_word)a << " and " << (t_word)b;
     }
@@ -38,8 +38,8 @@ TEST(ALUIntegerRV32, SUB)
     {
         t_uword a = std::rand();
         t_uword b = std::rand();
-        alu.m.a_op = a;
-        alu.m.b_op = b;
+        alu.m.a = a;
+        alu.m.b = b;
         alu.tick();
         ASSERT_EQ((t_word)alu.m.result, (t_word)a - (t_word)b) << "Subtracting " << (t_word)a << " and " << (t_word)b;
     }
@@ -56,11 +56,16 @@ TEST(ALUIntegerRV32, SLT)
     {
         t_uword a = std::rand();
         t_uword b = std::rand();
-        alu.m.a_op = a;
-        alu.m.b_op = b;
+        alu.m.a = a;
+        alu.m.b = b;
         alu.tick();
         ASSERT_EQ((t_word)alu.m.result, (t_word)a < (t_word)b) << "Set less than " << (t_word)a << " and " << (t_word)b;
     }
+
+    alu.m.a = -1;
+    alu.m.b = 1;
+    alu.tick();
+    ASSERT_EQ((t_word)alu.m.result, 1);
 }
 
 TEST(ALUIntegerRV32, SLTU)
@@ -74,11 +79,16 @@ TEST(ALUIntegerRV32, SLTU)
     {
         t_uword a = std::rand();
         t_uword b = std::rand();
-        alu.m.a_op = a;
-        alu.m.b_op = b;
+        alu.m.a = a;
+        alu.m.b = b;
         alu.tick();
         ASSERT_EQ((t_word)alu.m.result, a < b) << "Set less than unsigned " << a << " and " << b;
     }
+
+    alu.m.a = -1;
+    alu.m.b = 1;
+    alu.tick();
+    ASSERT_EQ((t_word)alu.m.result, 0);
 }
 
 TEST(ALUIntegerRV32, AND)
@@ -92,8 +102,8 @@ TEST(ALUIntegerRV32, AND)
     {
         t_uword a = std::rand();
         t_uword b = std::rand();
-        alu.m.a_op = a;
-        alu.m.b_op = b;
+        alu.m.a = a;
+        alu.m.b = b;
         alu.tick();
         ASSERT_EQ((t_word)alu.m.result, a & b) << "Anding " << (t_word)a << " and " << (t_word)b;
     }
@@ -110,8 +120,8 @@ TEST(ALUIntegerRV32, OR)
     {
         t_uword a = std::rand();
         t_uword b = std::rand();
-        alu.m.a_op = a;
-        alu.m.b_op = b;
+        alu.m.a = a;
+        alu.m.b = b;
         alu.tick();
         ASSERT_EQ((t_word)alu.m.result, a | b) << "Oring " << (t_word)a << " and " << (t_word)b;
     }
@@ -128,8 +138,8 @@ TEST(ALUIntegerRV32, XOR)
     {
         t_uword a = std::rand();
         t_uword b = std::rand();
-        alu.m.a_op = a;
-        alu.m.b_op = b;
+        alu.m.a = a;
+        alu.m.b = b;
         alu.tick();
         ASSERT_EQ((t_word)alu.m.result, a ^ b) << "Xoring " << (t_word)a << " and " << (t_word)b;
     }
@@ -147,8 +157,8 @@ TEST(ALUIntegerRV32, SLL)
         t_uword a = std::rand();
         for (t_uword b = 0; b < 32; b++)
         {
-            alu.m.a_op = a;
-            alu.m.b_op = b;
+            alu.m.a = a;
+            alu.m.b = b;
             alu.tick();
             ASSERT_EQ((t_word)alu.m.result, a << b) << "Shiting left " << (t_word)a << " and " << (t_word)b;
         }
@@ -167,8 +177,8 @@ TEST(ALUIntegerRV32, SRL)
         t_uword a = std::rand();
         for (t_uword b = 0; b < 32; b++)
         {
-            alu.m.a_op = a;
-            alu.m.b_op = b;
+            alu.m.a = a;
+            alu.m.b = b;
             alu.tick();
             ASSERT_EQ((t_word)alu.m.result, a >> b) << "Shifting right logical " << (t_word)a << " and " << (t_word)b;
         }
@@ -187,8 +197,8 @@ TEST(ALUIntegerRV32, SRA)
         t_uword a = std::rand();
         for (t_uword b = 0; b < 32; b++)
         {
-            alu.m.a_op = a;
-            alu.m.b_op = b;
+            alu.m.a = a;
+            alu.m.b = b;
             alu.tick();
             ASSERT_EQ((t_word)alu.m.result, (t_word)a >> (t_word)b) << "Shifting right athrithmetic " << (t_word)a << " and " << (t_word)b;
         }
@@ -200,8 +210,8 @@ TEST(ALUIntegerRV32, SRA)
         ASSERT_LT ((t_word)a, 0);
         for (t_uword b = 0; b < 32; b++)
         {
-            alu.m.a_op = a;
-            alu.m.b_op = b;
+            alu.m.a = a;
+            alu.m.b = b;
             alu.tick();
             ASSERT_EQ((t_word)alu.m.result, (t_word)a >> (t_word)b) << "Shifting right athrithmetic " << (t_word)a << " and " << (t_word)b;
         }
